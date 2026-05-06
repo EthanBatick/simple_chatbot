@@ -57,4 +57,5 @@ linking_verbs = [
     "smelled",
 
     "likes",
+    "comes",
 ]

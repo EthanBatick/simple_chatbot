@@ -91,12 +91,51 @@ while user_input != 'q':
             if len(list(set(["name", "named", "names", "name's"]) & set(subject + predicate))):
                 send_response("Hello " + predicate[-1] + "!")
                 chat_context.user.info["name"] = predicate
+                chat_context.user.info["my name"] = predicate
                 chat_context.user.info[""] = predicate
             elif subject[0] in ["i", "im"] and len(list(set(predicate) & set(names))) > 0:
                 send_response("Hello " + predicate[-1] + "!")
                 chat_context.user.info["name"] = predicate
+                chat_context.user.info["my name"] = predicate
                 chat_context.user.info[""] = predicate
         
         #   general context statements
         else:
-            chat_context.world_info[" ".join(subject[1:])] = predicate
+            chat_context.world_info[" ".join(subject)] = predicate
+
+    elif sentence_type == "question":
+        #   split into subject and predicate
+        subject = []
+        predicate = []
+        i = 0
+        hit = False
+        while i < len(normalized_sentence):
+            if not hit and normalized_sentence[i] in linking_verbs:
+                hit = True
+            if not hit:
+                subject.append(normalized_sentence[i])
+            else:
+                predicate.append(normalized_sentence[i])
+            i += 1
+
+        #   questions about people
+        if normalized_sentence[0] in ["who", "what"]:
+            #   assume the subject is after who/what and a 2nd word like is
+            if " ".join(predicate[1:]) in chat_context.user.info:
+                if predicate[1] == "your":
+                    send_response("my " + " ".join(predicate[2:]) + " " + " ".join(chat_context.user.info[" ".join(predicate[1:])]))
+                elif predicate[1] == "my":
+                    send_response("your " + " ".join(predicate[2:]) + " " + " ".join(chat_context.user.info[" ".join(predicate[1:])]))
+                else:
+                    send_response(" ".join(predicate[1:]) + " " + " ".join(chat_context.user.info[" ".join(predicate[1:])]))
+            elif " ".join(predicate[1:]) in chat_context.world_info:
+                if predicate[1] == "your":
+                    send_response("my " + " ".join(predicate[2:]) + " " + " ".join(chat_context.world_info[" ".join(predicate[1:])]))
+                elif predicate[1] == "my":
+                    send_response("your " + " ".join(predicate[2:]) + " " + " ".join(chat_context.world_info[" ".join(predicate[1:])]))
+                else:
+                    send_response(" ".join(predicate[1:]) + " " + " ".join(chat_context.world_info[" ".join(predicate[1:])]))
+            else:
+                send_response("I'm not sure!")
+        else:
+            send_response("I'm not sure!")
