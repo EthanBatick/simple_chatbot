@@ -178,6 +178,7 @@ words = [
     'help',
     'high',
     'little',
+    'debug',
     'old',
     'since',
     'another',

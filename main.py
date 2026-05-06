@@ -20,7 +20,10 @@ while user_input != 'q':
     #   the sentence contains a goodbye or hello we instantly snap to greeting
     #   or goodbye
 
-
+    #   debug info
+    if normalized_sentence == ["debug"]:
+        print("User info: " + str(chat_context.user.info),
+              "General info: " + str(chat_context.world_info))
 
     #   empty message
     empty_input_responses = [
@@ -85,8 +88,14 @@ while user_input != 'q':
         #   statements about user
         if subject[0] in ["my", "i", "im"]:
             chat_context.user.info[" ".join(subject[1:])] = predicate
-            if len(list(set(["name", "named"]) & set(subject + predicate))):
+            if len(list(set(["name", "named", "names", "name's"]) & set(subject + predicate))):
                 send_response("Hello " + predicate[-1] + "!")
+                chat_context.user.info["name"] = predicate
+                chat_context.user.info[""] = predicate
+            elif subject[0] in ["i", "im"] and len(list(set(predicate) & set(names))) > 0:
+                send_response("Hello " + predicate[-1] + "!")
+                chat_context.user.info["name"] = predicate
+                chat_context.user.info[""] = predicate
         
         #   general context statements
         else:

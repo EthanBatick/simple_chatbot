@@ -253,6 +253,7 @@ words = [
     'though',
     'business',
     'issue',
+    'debug',
     'side',
     'kind',
     'four',
