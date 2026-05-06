@@ -86,18 +86,19 @@ while user_input != 'q':
                 predicate.append(normalized_sentence[i])
             i += 1
         #   statements about user
-        if subject[0] in ["my", "i", "im"]:
+        if subject[0] == "my" and len(list(set(["name", "named", "names", "name's"]) & set(subject + predicate))) and len(subject) == 2:
             chat_context.user.info[" ".join(subject[1:])] = predicate
-            if len(list(set(["name", "named", "names", "name's"]) & set(subject + predicate))):
-                send_response("Hello " + predicate[-1] + "!")
-                chat_context.user.info["name"] = predicate
-                chat_context.user.info["my name"] = predicate
-                chat_context.user.info[""] = predicate
-            elif subject[0] in ["i", "im"] and len(list(set(predicate) & set(names))) > 0:
-                send_response("Hello " + predicate[-1] + "!")
-                chat_context.user.info["name"] = predicate
-                chat_context.user.info["my name"] = predicate
-                chat_context.user.info[""] = predicate
+            send_response("Hello " + predicate[-1] + "!")
+            chat_context.user.info["name"] = predicate
+            chat_context.user.info["my name"] = predicate
+            chat_context.user.info[""] = predicate
+
+        elif subject[0] in ["i", "im"] and len(list(set(predicate) & set(names))) > 0:
+            chat_context.user.info[" ".join(subject[1:])] = predicate
+            send_response("Hello " + predicate[-1] + "!")
+            chat_context.user.info["name"] = ["is"] + predicate[1:]
+            chat_context.user.info["my name"] = ["is"] + predicate[1:]
+            chat_context.user.info[""] = predicate
         
         #   general context statements
         else:
