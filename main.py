@@ -117,17 +117,17 @@ while user_input != 'q':
             else:
                 predicate.append(normalized_sentence[i])
             i += 1
-
-        #   questions about people
+        #print(subject,predicate)
+        #   questions about stuff
         if normalized_sentence[0] in ["who", "what"]:
             #   assume the subject is after who/what and a 2nd word like is
-            if " ".join(predicate[1:]) in chat_context.user.info:
+            if " ".join(predicate[2:]) in chat_context.user.info and predicate[1] in ["my"]:
                 if predicate[1] == "your":
-                    send_response("my " + " ".join(predicate[2:]) + " " + " ".join(chat_context.user.info[" ".join(predicate[1:])]))
+                    send_response("my " + " ".join(predicate[2:]) + " " + " ".join(chat_context.user.info[" ".join(predicate[2:])]))
                 elif predicate[1] == "my":
-                    send_response("your " + " ".join(predicate[2:]) + " " + " ".join(chat_context.user.info[" ".join(predicate[1:])]))
+                    send_response("your " + " ".join(predicate[2:]) + " " + " ".join(chat_context.user.info[" ".join(predicate[2:])]))
                 else:
-                    send_response(" ".join(predicate[1:]) + " " + " ".join(chat_context.user.info[" ".join(predicate[1:])]))
+                    send_response(" ".join(predicate[1:]) + " " + " ".join(chat_context.user.info[" ".join(predicate[2:])]))
             elif " ".join(predicate[1:]) in chat_context.world_info:
                 if predicate[1] == "your":
                     send_response("my " + " ".join(predicate[2:]) + " " + " ".join(chat_context.world_info[" ".join(predicate[1:])]))
