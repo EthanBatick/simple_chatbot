@@ -4,6 +4,8 @@
 
 words = [
     'the',
+    'im',
+    'i\'m',
     'to',
     'and',
     'of',
