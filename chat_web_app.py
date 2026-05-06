@@ -223,7 +223,7 @@ def get_response(user_input):
             return send_response("I'm not sure!")
 
     else:
-        return send_response("I'm not sure!")
+        return send_response("Im sorry I dont understand")
 
 
 @app.route("/")
